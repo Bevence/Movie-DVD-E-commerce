@@ -5,7 +5,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
-var indexRouter = require("./routes/index");
+var indexRouter = require("./modules/route");
 
 var app = express();
 const port = config.get("app.port");
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
+app.use("/api/v1", indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -44,6 +44,6 @@ app.listen(port, "localhost", (err) => {
   if (err) {
     console.log({ err });
   } else {
-    console.log(`Server is running on port ${port}`);
+    console.log(`🚀 Server ready at: http://localhost:${port}`);
   }
 });

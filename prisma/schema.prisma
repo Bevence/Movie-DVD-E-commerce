@@ -16,11 +16,11 @@ model TitleAkas {
   types           String[]          @db.VarChar(255)
   attributes      String[]          @db.VarChar(255)
   isOriginalTitle Boolean           @default(false)
-  TitleBasics     TitleBasics?
-  TitleCrew       TitleCrew[]
-  TitleEpisode    TitleEpisode[]
-  TitlePrincipals TitlePrincipals[]
-  TitleRatings    TitleRatings?
+  titleBasics     TitleBasics?
+  titleCrew       TitleCrew[]
+  titleEpisode    TitleEpisode[]
+  titlePrincipals TitlePrincipals[]
+  titleRatings    TitleRatings?
 }
 
 model NameBasics {

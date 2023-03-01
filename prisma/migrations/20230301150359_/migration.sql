@@ -1,4 +1,18 @@
 -- CreateTable
+CREATE TABLE "TitleAkas" (
+    "titleId" TEXT NOT NULL,
+    "ordering" SERIAL NOT NULL,
+    "title" VARCHAR(255) NOT NULL,
+    "region" VARCHAR(255) NOT NULL,
+    "language" VARCHAR(255) NOT NULL,
+    "types" VARCHAR(255)[],
+    "attributes" VARCHAR(255)[],
+    "isOriginalTitle" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "TitleAkas_pkey" PRIMARY KEY ("titleId")
+);
+
+-- CreateTable
 CREATE TABLE "NameBasics" (
     "nconst" TEXT NOT NULL,
     "primaryName" VARCHAR(255) NOT NULL,
@@ -8,6 +22,21 @@ CREATE TABLE "NameBasics" (
     "knownForTitles" VARCHAR(255)[],
 
     CONSTRAINT "NameBasics_pkey" PRIMARY KEY ("nconst")
+);
+
+-- CreateTable
+CREATE TABLE "TitleBasics" (
+    "tconst" TEXT NOT NULL,
+    "titleType" VARCHAR(255) NOT NULL,
+    "primaryTitle" VARCHAR(255) NOT NULL,
+    "originalTitle" VARCHAR(255) NOT NULL,
+    "isAdult" BOOLEAN NOT NULL DEFAULT false,
+    "startYear" DATE,
+    "endYear" DATE,
+    "runtimeMinutes" INTEGER NOT NULL,
+    "genres" VARCHAR(255)[],
+
+    CONSTRAINT "TitleBasics_pkey" PRIMARY KEY ("tconst")
 );
 
 -- CreateTable
@@ -51,6 +80,9 @@ CREATE TABLE "TitleRatings" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "TitleBasics_tconst_key" ON "TitleBasics"("tconst");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "TitleCrew_tconst_key" ON "TitleCrew"("tconst");
 
 -- CreateIndex
@@ -64,6 +96,9 @@ CREATE UNIQUE INDEX "TitlePrincipals_nconst_key" ON "TitlePrincipals"("nconst");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "TitleRatings_tconst_key" ON "TitleRatings"("tconst");
+
+-- AddForeignKey
+ALTER TABLE "TitleBasics" ADD CONSTRAINT "TitleBasics_tconst_fkey" FOREIGN KEY ("tconst") REFERENCES "TitleAkas"("titleId") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "TitleCrew" ADD CONSTRAINT "TitleCrew_tconst_fkey" FOREIGN KEY ("tconst") REFERENCES "TitleAkas"("titleId") ON DELETE NO ACTION ON UPDATE NO ACTION;
