@@ -7,33 +7,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ROLE {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username  String
+  role      ROLE     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model TitleAkas {
-  titleId         String            @id @default(uuid())
-  ordering        Int               @default(autoincrement())
-  title           String            @db.VarChar(255)
-  region          String            @db.VarChar(255)
-  language        String            @db.VarChar(255)
-  types           String[]          @db.VarChar(255)
-  attributes      String[]          @db.VarChar(255)
-  isOriginalTitle Boolean           @default(false)
-  titleBasics     TitleBasics?
+  titleId         String           @id @default(uuid())
+  ordering        Int              @default(autoincrement())
+  title           String           @db.VarChar(255)
+  region          String           @db.VarChar(255)
+  language        String           @db.VarChar(255)
+  types           String[]         @db.VarChar(255)
+  attributes      String[]         @db.VarChar(255)
+  isOriginalTitle Boolean          @default(false)
+  titleBasic      TitleBasic?
   titleCrew       TitleCrew[]
   titleEpisode    TitleEpisode[]
-  titlePrincipals TitlePrincipals[]
-  titleRatings    TitleRatings?
+  titlePrincipal  TitlePrincipal[]
+  titleRatings    TitleRating?
 }
 
-model NameBasics {
-  nconst            String           @id @default(uuid())
-  primaryName       String           @db.VarChar(255)
-  birthYear         DateTime         @db.Date
-  deathYear         DateTime         @db.Date
-  primaryProfession String[]         @db.VarChar(255)
-  knownForTitles    String[]         @db.VarChar(255)
-  TitlePrincipals   TitlePrincipals?
+model NameBasic {
+  nconst            String          @id @default(uuid())
+  primaryName       String          @db.VarChar(255)
+  birthYear         DateTime        @db.Date
+  deathYear         DateTime        @db.Date
+  primaryProfession String[]        @db.VarChar(255)
+  knownForTitles    String[]        @db.VarChar(255)
+  titlePrincipal    TitlePrincipal?
 }
 
-model TitleBasics {
+model TitleBasic {
   tconst         String    @id @unique
   titleAkas      TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
   titleType      String    @db.VarChar(255)
@@ -61,18 +76,18 @@ model TitleEpisode {
   episodeNumber Int
 }
 
-model TitlePrincipals {
-  tconst     String     @id @unique
-  titleAkas  TitleAkas  @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
-  ordering   Int        @default(autoincrement())
-  nconst     String     @unique
-  nameBasics NameBasics @relation(fields: [nconst], references: [nconst], onDelete: NoAction, onUpdate: NoAction)
-  category   String     @db.VarChar(255)
-  job        String     @db.VarChar(255)
-  characters String     @db.VarChar(255)
+model TitlePrincipal {
+  tconst     String    @id @unique
+  titleAkas  TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
+  ordering   Int       @default(autoincrement())
+  nconst     String    @unique
+  nameBasics NameBasic @relation(fields: [nconst], references: [nconst], onDelete: NoAction, onUpdate: NoAction)
+  category   String    @db.VarChar(255)
+  job        String    @db.VarChar(255)
+  characters String    @db.VarChar(255)
 }
 
-model TitleRatings {
+model TitleRating {
   tconst        String    @id @unique
   titleAkas     TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
   averageRating Float

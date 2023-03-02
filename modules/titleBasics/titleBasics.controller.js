@@ -1,6 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
-
-const prismaClient = new PrismaClient();
+const prismaClient = require("../prismaClient");
 
 class TitleBasicsController {
   registerMovieTitleBasics = async (req, res, next) => {
@@ -15,7 +13,7 @@ class TitleBasicsController {
         runtimeMinutes,
         genres,
       } = req.body;
-      const titleBasics = await prismaClient.titleBasics.create({
+      const titleBasics = await prismaClient.titleBasic.create({
         data: {
           titleType,
           primaryTitle,
