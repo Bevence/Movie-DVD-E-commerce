@@ -48,6 +48,9 @@ class TitleAkasController {
         where: {
           titleId: id,
         },
+        include: {
+          titleBasics: true,
+        },
       });
       res.json({
         status: true,
@@ -59,9 +62,44 @@ class TitleAkasController {
     }
   };
 
-  updateMovieTitleById = async (req, res, next) => {};
+  updateMovieTitleById = async (req, res, next) => {
+    const { id } = req.params;
 
-  deleteMovieTitleById = async (req, res, next) => {};
+    try {
+      const movieTitle = await prismaClient.titleAkas.update({
+        where: {
+          titleId: id,
+        },
+        data: req.body,
+      });
+      res.json({
+        status: true,
+        data: movieTitle,
+        message: "Update movie title by id success",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteMovieTitleById = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+      const movieTitle = await prismaClient.titleAkas.delete({
+        where: {
+          titleId: id,
+        },
+      });
+      res.json({
+        status: true,
+        data: movieTitle,
+        message: "Delete movie title by id success",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 const titleAkasController = new TitleAkasController();
