@@ -6,16 +6,21 @@
     "start": "nodemon app.js"
   },
   "dependencies": {
+    "@adminjs/express": "^5.1.0",
+    "@adminjs/prisma": "^3.0.1",
     "@prisma/client": "^4.11.0",
+    "adminjs": "^6.8.7",
     "bcrypt": "^5.1.0",
     "config": "^3.3.9",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.0",
     "morgan": "~1.9.1",
-    "prisma": "^4.11.0"
+    "prisma": "^4.11.0",
+    "tslib": "^2.5.0"
   }
 }

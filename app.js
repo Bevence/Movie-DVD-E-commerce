@@ -5,6 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
+const { admin, adminRouter } = require("./admin");
 
 const indexRouter = require("./modules/route");
 
@@ -28,6 +29,8 @@ app.use(
 );
 
 app.use("/api/v1", indexRouter);
+
+app.use(admin.options.rootPath, adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -54,5 +57,8 @@ app.listen(port, "localhost", (err) => {
     console.log({ err });
   } else {
     console.log(`🚀 Server ready at: http://localhost:${port}`);
+    console.log(
+      `AdminJS started on http://localhost:${port}${admin.options.rootPath}`
+    );
   }
 });

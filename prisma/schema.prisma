@@ -40,7 +40,8 @@ model TitleAkas {
 }
 
 model NameBasic {
-  nconst            String          @id @default(uuid())
+  id                String          @id @default(uuid())
+  nconst            String          @unique @default(uuid())
   primaryName       String          @db.VarChar(255)
   birthYear         DateTime        @db.Date
   deathYear         DateTime        @db.Date
@@ -50,7 +51,8 @@ model NameBasic {
 }
 
 model TitleBasic {
-  tconst         String    @id @unique
+  id             String    @id @default(uuid())
+  tconst         String    @unique
   titleAkas      TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
   titleType      String    @db.VarChar(255)
   primaryTitle   String    @db.VarChar(255)
@@ -63,14 +65,16 @@ model TitleBasic {
 }
 
 model TitleCrew {
-  tconst    String    @id @unique
+  id        String    @id @default(uuid())
+  tconst    String    @unique
   titleAkas TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
   directors String[]  @db.VarChar(255)
   writers   String[]  @db.VarChar(255)
 }
 
 model TitleEpisode {
-  tconst        String    @id @unique
+  id            String    @id @default(uuid())
+  tconst        String    @unique
   titleAkas     TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
   parentTconst  String    @db.VarChar(255)
   seasonNumber  Int
@@ -78,7 +82,8 @@ model TitleEpisode {
 }
 
 model TitlePrincipal {
-  tconst     String    @id @unique
+  id         String    @id @default(uuid())
+  tconst     String    @unique
   titleAkas  TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
   ordering   Int       @default(autoincrement())
   nconst     String    @unique
@@ -89,7 +94,8 @@ model TitlePrincipal {
 }
 
 model TitleRating {
-  tconst        String    @id @unique
+  id            String    @id @default(uuid())
+  tconst        String    @unique
   titleAkas     TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
   averageRating Float
   numVotes      Int
