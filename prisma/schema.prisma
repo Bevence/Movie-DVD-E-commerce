@@ -23,19 +23,20 @@ model User {
 }
 
 model TitleAkas {
-  titleId         String           @id @default(uuid())
-  ordering        Int              @default(autoincrement())
-  title           String           @db.VarChar(255)
-  region          String           @db.VarChar(255)
-  language        String           @db.VarChar(255)
-  types           String[]         @db.VarChar(255)
-  attributes      String[]         @db.VarChar(255)
-  isOriginalTitle Boolean          @default(false)
-  titleBasic      TitleBasic?
-  titleCrew       TitleCrew[]
-  titleEpisode    TitleEpisode[]
-  titlePrincipal  TitlePrincipal[]
-  titleRatings    TitleRating?
+  titleId           String           @id @default(uuid())
+  ordering          Int              @default(autoincrement())
+  title             String           @db.VarChar(255)
+  region            String           @db.VarChar(255)
+  language          String           @db.VarChar(255)
+  types             String[]         @db.VarChar(255)
+  attributes        String[]         @db.VarChar(255)
+  isOriginalTitle   Boolean          @default(false)
+  quantityAvailable Int              @default(1)
+  titleBasic        TitleBasic?
+  titleCrew         TitleCrew[]
+  titleEpisode      TitleEpisode[]
+  titlePrincipal    TitlePrincipal[]
+  titleRatings      TitleRating?
 }
 
 model NameBasic {

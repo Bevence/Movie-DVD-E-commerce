@@ -1,4 +1,4 @@
-const prismaClient = require("../prismaClient");
+const prismaClient = require("../../prismaClient");
 
 class TitleBasicsController {
   registerMovieTitleBasics = async (req, res, next) => {

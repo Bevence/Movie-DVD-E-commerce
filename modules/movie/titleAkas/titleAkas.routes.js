@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const isLoggedIn = require("../../middlewares/isLoggedIn");
+const isLoggedIn = require("../../../middlewares/isLoggedIn");
 const titleAkasController = require("./titleAkas.controller");
 
 router
