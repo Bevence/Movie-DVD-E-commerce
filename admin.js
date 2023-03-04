@@ -40,6 +40,25 @@ const admin = new AdminJS({
         navigation: movieNavigation,
       },
     },
+    {
+      resource: { model: dmmf.modelMap.TitleEpisode, client: prismaClient },
+      options: {
+        navigation: movieNavigation,
+      },
+    },
+
+    {
+      resource: { model: dmmf.modelMap.TitleCrew, client: prismaClient },
+      options: {
+        navigation: movieNavigation,
+      },
+    },
+    {
+      resource: { model: dmmf.modelMap.NameBasic, client: prismaClient },
+      options: {
+        navigation: movieNavigation,
+      },
+    },
   ],
   branding: {
     companyName: "Movie Ecommerce",

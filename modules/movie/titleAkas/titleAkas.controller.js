@@ -16,14 +16,26 @@ class TitleAkasController {
 
   registerMovieTitle = async (req, res, next) => {
     try {
-      const { title, region, language, types, attributes } = req.body;
+      const {
+        title,
+        ordering,
+        region,
+        language,
+        types,
+        attributes,
+        isOriginalTitle,
+        quantityAvailable,
+      } = req.body;
       const titleAkas = await prismaClient.titleAkas.create({
         data: {
           title,
+          ordering,
           region,
           language,
           types,
           attributes,
+          isOriginalTitle,
+          quantityAvailable,
         },
       });
       res.json({

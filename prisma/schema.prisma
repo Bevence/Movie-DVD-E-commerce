@@ -23,31 +23,31 @@ model User {
 }
 
 model TitleAkas {
-  titleId           String           @id @default(uuid())
-  ordering          Int              @default(autoincrement())
-  title             String           @db.VarChar(255)
-  region            String           @db.VarChar(255)
-  language          String           @db.VarChar(255)
-  types             String[]         @db.VarChar(255)
-  attributes        String[]         @db.VarChar(255)
-  isOriginalTitle   Boolean          @default(false)
-  quantityAvailable Int              @default(1)
+  titleId           String          @id @default(uuid())
+  ordering          Int
+  title             String          @db.VarChar(255)
+  region            String          @db.VarChar(255)
+  language          String          @db.VarChar(255)
+  types             String[]        @db.VarChar(255)
+  attributes        String[]        @db.VarChar(255)
+  isOriginalTitle   Boolean         @default(false)
+  quantityAvailable Int             @default(1)
   titleBasic        TitleBasic?
-  titleCrew         TitleCrew[]
-  titleEpisode      TitleEpisode[]
-  titlePrincipal    TitlePrincipal[]
+  titleCrew         TitleCrew?
+  titleEpisode      TitleEpisode?
+  titlePrincipal    TitlePrincipal?
   titleRatings      TitleRating?
 }
 
 model NameBasic {
-  id                String          @id @default(uuid())
-  nconst            String          @unique @default(uuid())
+  nconst            String          @id @unique @default(uuid())
   primaryName       String          @db.VarChar(255)
   birthYear         DateTime        @db.Date
-  deathYear         DateTime        @db.Date
+  deathYear         DateTime?       @db.Date
   primaryProfession String[]        @db.VarChar(255)
   knownForTitles    String[]        @db.VarChar(255)
   titlePrincipal    TitlePrincipal?
+  directors         TitleCrew[]
 }
 
 model TitleBasic {
@@ -58,18 +58,17 @@ model TitleBasic {
   primaryTitle   String    @db.VarChar(255)
   originalTitle  String    @db.VarChar(255)
   isAdult        Boolean   @default(false)
-  startYear      DateTime? @db.Date
-  endYear        DateTime? @db.Date
+  startYear      DateTime  @db.Date
+  endYear        DateTime  @db.Date
   runtimeMinutes Int
   genres         String[]  @db.VarChar(255)
 }
 
 model TitleCrew {
-  id        String    @id @default(uuid())
-  tconst    String    @unique
-  titleAkas TitleAkas @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
-  directors String[]  @db.VarChar(255)
-  writers   String[]  @db.VarChar(255)
+  id        String      @id @default(uuid())
+  tconst    String      @unique
+  titleAkas TitleAkas   @relation(fields: [tconst], references: [titleId], onDelete: NoAction, onUpdate: NoAction)
+  directors NameBasic[]
 }
 
 model TitleEpisode {
@@ -100,3 +99,19 @@ model TitleRating {
   averageRating Float
   numVotes      Int
 }
+
+// model MovieDirector {
+//   id         String    @id @default(uuid())
+//   directorId String
+//   director   NameBasic @relation(fields: [directorId], references: [nconst])
+//   movieId    String
+//   movie      TitleCrew @relation(fields: [movieId], references: [tconst])
+// }
+
+// model MovieWriter {
+//   id       String    @id @default(uuid())
+//   writerId String
+//   writer   NameBasic @relation(fields: [writerId], references: [nconst])
+//   movieId  String
+//   movie    TitleCrew @relation(fields: [movieId], references: [tconst])
+// }
