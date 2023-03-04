@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "NameBasic" ALTER COLUMN "birthYear" DROP DEFAULT;
+
+-- AlterTable
+ALTER TABLE "TitleBasic" ALTER COLUMN "startYear" DROP DEFAULT,
+ALTER COLUMN "endYear" DROP DEFAULT;

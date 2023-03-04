@@ -3,7 +3,55 @@ const prismaClient = require("../../prismaClient");
 class TitleAkasController {
   getAllMovieTitle = async (req, res, next) => {
     try {
-      const titleAkas = await prismaClient.titleAkas.findMany();
+      const { name, genre, year, actor, director } = req.query;
+      const filter = {};
+      if (name) {
+        filter.title = {
+          contains: name,
+          mode: "insensitive",
+        };
+      }
+      if (genre) {
+        filter.titleBasic = {
+          genres: {
+            has: genre,
+          },
+        };
+      }
+      if (year) {
+        filter.titleBasic = {
+          startYear: {
+            equals: year,
+          },
+        };
+      }
+      if (director) {
+        filter.titleCrew = {
+          directors: {
+            some: {
+              primaryName: {
+                contains: director,
+                mode: "insensitive",
+              },
+            },
+          },
+        };
+      }
+
+      console.log("filter :>> ", filter);
+      const titleAkas = await prismaClient.titleAkas.findMany({
+        where: filter,
+        include: {
+          titleBasic: true,
+          titleCrew: {
+            include: {
+              directors: true,
+            },
+          },
+          titleEpisode: true,
+          titleRatings: true,
+        },
+      });
       res.json({
         status: true,
         data: titleAkas,
@@ -60,6 +108,13 @@ class TitleAkasController {
         },
         include: {
           titleBasic: true,
+          titleCrew: {
+            include: {
+              directors: true,
+            },
+          },
+          titleEpisode: true,
+          titleRatings: true,
         },
       });
       res.json({

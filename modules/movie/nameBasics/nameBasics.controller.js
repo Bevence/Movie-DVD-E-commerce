@@ -22,8 +22,8 @@ class NameBasicsController {
       const titleBasics = await prismaClient.nameBasic.create({
         data: {
           primaryName,
-          birthYear: new Date(birthYear),
-          deathYear: deathYear ? new Date(deathYear) : null,
+          birthYear: birthYear,
+          deathYear: deathYear,
           primaryProfession,
           knownForTitles,
         },

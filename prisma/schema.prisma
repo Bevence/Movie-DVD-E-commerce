@@ -42,8 +42,8 @@ model TitleAkas {
 model NameBasic {
   nconst            String          @id @unique @default(uuid())
   primaryName       String          @db.VarChar(255)
-  birthYear         DateTime        @db.Date
-  deathYear         DateTime?       @db.Date
+  birthYear         String          @db.VarChar(255)
+  deathYear         String?         @db.VarChar(255)
   primaryProfession String[]        @db.VarChar(255)
   knownForTitles    String[]        @db.VarChar(255)
   titlePrincipal    TitlePrincipal?
@@ -58,8 +58,8 @@ model TitleBasic {
   primaryTitle   String    @db.VarChar(255)
   originalTitle  String    @db.VarChar(255)
   isAdult        Boolean   @default(false)
-  startYear      DateTime  @db.Date
-  endYear        DateTime  @db.Date
+  startYear      String    @db.VarChar(255)
+  endYear        String    @db.VarChar(255)
   runtimeMinutes Int
   genres         String[]  @db.VarChar(255)
 }

@@ -19,8 +19,8 @@ class TitleBasicsController {
           primaryTitle,
           originalTitle,
           isAdult,
-          startYear: new Date(startYear),
-          endYear: new Date(endYear),
+          startYear: startYear,
+          endYear: endYear,
           runtimeMinutes,
           genres,
           titleAkas: {
