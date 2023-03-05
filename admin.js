@@ -19,7 +19,7 @@ const movieNavigation = {
 const admin = new AdminJS({
   resources: [
     {
-      resource: { model: dmmf.modelMap.User, client: prismaClient },
+      resource: { model: dmmf.modelMap.Order, client: prismaClient },
       options: {
         id: "users",
         navigation: {
@@ -46,7 +46,6 @@ const admin = new AdminJS({
         navigation: movieNavigation,
       },
     },
-
     {
       resource: { model: dmmf.modelMap.TitleCrew, client: prismaClient },
       options: {

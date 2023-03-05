@@ -16,6 +16,7 @@ enum ORDER_STATUS {
   INITIATED
   PROCESSED
   SHIPPED
+  COLLECTED
 }
 
 model User {

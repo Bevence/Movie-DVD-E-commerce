@@ -66,6 +66,123 @@ class OrderController {
       next(err);
     }
   };
+
+  myOrders = async (req, res, next) => {
+    try {
+      const { id: userId } = req.currentUser;
+      const result = await prismaClient.order.findMany({
+        where: {
+          userId,
+          OR: [
+            {
+              status: "INITIATED",
+            },
+            {
+              status: "PROCESSED",
+            },
+          ],
+        },
+        include: {
+          movie: true,
+        },
+      });
+      res.json({
+        status: true,
+        data: result,
+        message: "Get my orders success",
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  orderHistory = async (req, res, next) => {
+    try {
+      const { id: userId } = req.currentUser;
+      const result = await prismaClient.order.findMany({
+        where: {
+          userId,
+          status: "SHIPPED",
+        },
+        include: {
+          movie: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      res.json({
+        status: true,
+        data: result,
+        message: "Get my orders history success",
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  orderStatus = async (req, res, next) => {
+    try {
+      const { id: userId } = req.currentUser;
+      const { id } = req.params;
+      const order = await prismaClient.order.findUnique({
+        where: {
+          id,
+        },
+      });
+      if (order && order.userId === userId) {
+        res.json({
+          status: true,
+          data: { status: order.status },
+          message: "Get order status success",
+        });
+      } else {
+        res.json({
+          status: false,
+          data: null,
+          message: "Order not found",
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  collectOrder = async (req, res, next) => {
+    try {
+      const { id: userId } = req.currentUser;
+      const { id } = req.params;
+      const order = await prismaClient.order.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (order && order.userId === userId && order.status === "SHIPPED") {
+        const result = await prismaClient.order.update({
+          where: {
+            id,
+          },
+          data: {
+            status: "COLLECTED",
+          },
+        });
+        res.json({
+          status: true,
+          data: result,
+          message: "Collect order success",
+        });
+      } else {
+        res.json({
+          status: false,
+          data: null,
+          message: "Order not found or has not been shipped",
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 const orderController = new OrderController();
