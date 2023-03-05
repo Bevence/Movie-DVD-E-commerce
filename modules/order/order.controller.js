@@ -37,6 +37,35 @@ class OrderController {
       next(err);
     }
   };
+
+  makeOrder = async (req, res, next) => {
+    try {
+      const { id: userId } = req.currentUser;
+      const cart = req.session.cart || [];
+      const orderList = [];
+
+      cart.forEach((item) => {
+        const { movieId, quantity } = item;
+        orderList.push({
+          userId,
+          movieId,
+          quantity,
+        });
+      });
+
+      const result = await prismaClient.order.createMany({
+        data: orderList,
+      });
+      req.session.cart = [];
+      res.json({
+        status: true,
+        data: result,
+        message: "Make order success",
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 const orderController = new OrderController();

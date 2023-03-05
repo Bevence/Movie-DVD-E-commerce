@@ -12,14 +12,33 @@ enum ROLE {
   ADMIN
 }
 
+enum ORDER_STATUS {
+  INITIATED
+  PROCESSED
+  SHIPPED
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
   username  String
   role      ROLE     @default(USER)
+  orders    Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id        String       @id @default(uuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  movieId   String
+  movie     TitleAkas    @relation(fields: [movieId], references: [titleId])
+  quantity  Int
+  status    ORDER_STATUS @default(INITIATED)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 }
 
 model TitleAkas {
@@ -37,6 +56,7 @@ model TitleAkas {
   titleEpisode      TitleEpisode?
   titlePrincipal    TitlePrincipal?
   titleRatings      TitleRating?
+  orders            Order[]
 }
 
 model NameBasic {

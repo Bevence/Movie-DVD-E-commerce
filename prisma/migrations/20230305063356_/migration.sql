@@ -1,0 +1,21 @@
+-- CreateEnum
+CREATE TYPE "ORDER_STATUS" AS ENUM ('INITIATED', 'PROCESSED', 'SHIPPED');
+
+-- CreateTable
+CREATE TABLE "Order" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "movieId" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "status" "ORDER_STATUS" NOT NULL DEFAULT 'INITIATED',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "TitleAkas"("titleId") ON DELETE RESTRICT ON UPDATE CASCADE;
