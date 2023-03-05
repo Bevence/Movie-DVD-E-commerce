@@ -1,17 +1,18 @@
 const router = require("express").Router();
 
 const isLoggedIn = require("../../../middlewares/isLoggedIn");
+const isAdmin = require("../../../middlewares/isAdmin");
 const titleAkasController = require("./titleAkas.controller");
 
 router
   .route("/")
   .get(titleAkasController.getAllMovieTitle)
-  .post(titleAkasController.registerMovieTitle);
+  .post([isLoggedIn, isAdmin], titleAkasController.registerMovieTitle);
 
 router
   .route("/:id")
   .get(titleAkasController.getMovieTitleById)
-  .put(titleAkasController.updateMovieTitleById)
-  .delete(titleAkasController.deleteMovieTitleById);
+  .put([isLoggedIn, isAdmin], titleAkasController.updateMovieTitleById)
+  .delete([isLoggedIn, isAdmin], titleAkasController.deleteMovieTitleById);
 
 module.exports = router;
