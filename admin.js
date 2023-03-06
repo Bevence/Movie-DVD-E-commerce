@@ -1,6 +1,7 @@
 const AdminJSPrisma = require("@adminjs/prisma");
 const AdminJS = require("adminjs");
 const AdminJSExpress = require("@adminjs/express");
+const bcrypt = require("bcrypt");
 
 const prismaClient = require("./modules/prismaClient");
 
@@ -14,6 +15,20 @@ const dmmf = prismaClient._baseDmmf;
 const movieNavigation = {
   name: "Movies",
   icon: "Movie",
+};
+
+const authenticate = async (email, password) => {
+  const user = await prismaClient.user.findUnique({
+    where: {
+      email,
+    },
+  });
+  if (user && user.role === "ADMIN") {
+    const isValidPassword = await bcrypt.compare(password, user?.password);
+    if (!isValidPassword) return null;
+    return Promise.resolve({ email: user.email, role: user.role });
+  }
+  return null;
 };
 
 const admin = new AdminJS({
@@ -53,20 +68,6 @@ const admin = new AdminJS({
     },
     {
       resource: { model: dmmf.modelMap.OrderItem, client: prismaClient },
-      options: {
-        actions: {
-          myCustomAction: {
-            actionType: "record",
-            component: false,
-            handler: async (request, response, data) => {
-              console.log("data", data);
-              return {
-                record: data.record.toJSON(),
-              };
-            },
-          },
-        },
-      },
     },
   ],
   branding: {
@@ -75,6 +76,18 @@ const admin = new AdminJS({
   },
 });
 
-const adminRouter = AdminJSExpress.buildRouter(admin);
+const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+  admin,
+  {
+    authenticate,
+    cookieName: "adminjs",
+    cookiePassword: "adminPassword",
+  },
+  null,
+  {
+    resave: false,
+    saveUninitialized: true,
+  }
+);
 
 module.exports = { admin, adminRouter };
