@@ -9,7 +9,7 @@ class OrderController {
           titleId: movieId,
         },
       });
-      if (movie) {
+      if (movie && movie.quantityAvailable >= quantity) {
         const cart = req.session.cart || [];
         const itemIndex = cart.findIndex((item) => item.movieId === movieId);
         if (itemIndex !== -1) {
@@ -30,7 +30,7 @@ class OrderController {
         res.json({
           status: false,
           data: null,
-          message: "Movie not found",
+          message: "Movie not found or quantity exceed",
         });
       }
     } catch (err) {
@@ -52,8 +52,7 @@ class OrderController {
           quantity,
         });
       });
-
-      const result = await prismaClient.order.createMany({
+      const result = await prismaClient.orderItem.createMany({
         data: orderList,
       });
       req.session.cart = [];
@@ -70,7 +69,7 @@ class OrderController {
   myOrders = async (req, res, next) => {
     try {
       const { id: userId } = req.currentUser;
-      const result = await prismaClient.order.findMany({
+      const result = await prismaClient.orderItem.findMany({
         where: {
           userId,
           OR: [
@@ -99,7 +98,7 @@ class OrderController {
   orderHistory = async (req, res, next) => {
     try {
       const { id: userId } = req.currentUser;
-      const result = await prismaClient.order.findMany({
+      const result = await prismaClient.orderItem.findMany({
         where: {
           userId,
           status: "SHIPPED",
@@ -125,7 +124,7 @@ class OrderController {
     try {
       const { id: userId } = req.currentUser;
       const { id } = req.params;
-      const order = await prismaClient.order.findUnique({
+      const order = await prismaClient.orderItem.findUnique({
         where: {
           id,
         },
@@ -152,7 +151,7 @@ class OrderController {
     try {
       const { id: userId } = req.currentUser;
       const { id } = req.params;
-      const order = await prismaClient.order.findUnique({
+      const order = await prismaClient.orderItem.findUnique({
         where: {
           id,
         },

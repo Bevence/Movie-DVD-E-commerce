@@ -19,14 +19,7 @@ const movieNavigation = {
 const admin = new AdminJS({
   resources: [
     {
-      resource: { model: dmmf.modelMap.Order, client: prismaClient },
-      options: {
-        id: "users",
-        navigation: {
-          name: "Users",
-          icon: "User",
-        },
-      },
+      resource: { model: dmmf.modelMap.User, client: prismaClient },
     },
     {
       resource: { model: dmmf.modelMap.TitleAkas, client: prismaClient },
@@ -56,6 +49,23 @@ const admin = new AdminJS({
       resource: { model: dmmf.modelMap.NameBasic, client: prismaClient },
       options: {
         navigation: movieNavigation,
+      },
+    },
+    {
+      resource: { model: dmmf.modelMap.OrderItem, client: prismaClient },
+      options: {
+        actions: {
+          myCustomAction: {
+            actionType: "record",
+            component: false,
+            handler: async (request, response, data) => {
+              console.log("data", data);
+              return {
+                record: data.record.toJSON(),
+              };
+            },
+          },
+        },
       },
     },
   ],

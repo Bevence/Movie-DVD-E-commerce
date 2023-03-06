@@ -6,7 +6,7 @@ const generateToken = require("../../utils/generateToken");
 class AuthUserController {
   register = async (req, res, next) => {
     try {
-      let { email, username, password } = req.body;
+      let { email, username, password, role } = req.body;
 
       // encrypt the plain password using bcrypt
       password = await bcrypt.hash(password, 10);
@@ -16,6 +16,7 @@ class AuthUserController {
           email,
           username,
           password,
+          role,
         },
       });
       res.json({

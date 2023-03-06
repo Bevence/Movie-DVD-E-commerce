@@ -20,26 +20,14 @@ enum ORDER_STATUS {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String      @id @default(uuid())
+  email     String      @unique
   password  String
   username  String
-  role      ROLE     @default(USER)
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Order {
-  id        String       @id @default(uuid())
-  userId    String
-  user      User         @relation(fields: [userId], references: [id])
-  movieId   String
-  movie     TitleAkas    @relation(fields: [movieId], references: [titleId])
-  quantity  Int
-  status    ORDER_STATUS @default(INITIATED)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  role      ROLE        @default(USER)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  orderItem OrderItem[]
 }
 
 model TitleAkas {
@@ -57,7 +45,7 @@ model TitleAkas {
   titleEpisode      TitleEpisode?
   titlePrincipal    TitlePrincipal?
   titleRatings      TitleRating?
-  orders            Order[]
+  orderItem         OrderItem[]
 }
 
 model NameBasic {
@@ -121,18 +109,14 @@ model TitleRating {
   numVotes      Int
 }
 
-// model MovieDirector {
-//   id         String    @id @default(uuid())
-//   directorId String
-//   director   NameBasic @relation(fields: [directorId], references: [nconst])
-//   movieId    String
-//   movie      TitleCrew @relation(fields: [movieId], references: [tconst])
-// }
-
-// model MovieWriter {
-//   id       String    @id @default(uuid())
-//   writerId String
-//   writer   NameBasic @relation(fields: [writerId], references: [nconst])
-//   movieId  String
-//   movie    TitleCrew @relation(fields: [movieId], references: [tconst])
-// }
+model OrderItem {
+  id        String       @id @default(uuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  movieId   String
+  movie     TitleAkas    @relation(fields: [movieId], references: [titleId])
+  quantity  Int
+  status    ORDER_STATUS @default(INITIATED)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
