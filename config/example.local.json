@@ -1,0 +1,9 @@
+{
+  "app": {
+    "port": "YOUR_PORT"
+  },
+  "jwt": {
+    "secret": "YOUR_SECRET_KEY",
+    "expiresIn": "YOUR_EXPIRATION_TIME"
+  }
+}

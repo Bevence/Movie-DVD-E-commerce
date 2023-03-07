@@ -1,5 +1,5 @@
 # Basic Configuration
-config
+config/local.json
 
 # Dependency directories
 node_modules/
