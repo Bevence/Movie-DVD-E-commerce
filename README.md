@@ -12,16 +12,19 @@ An Ecommerce platform for movie DVD
 Step-by-step instructions on how to install the project on a local machine.
 
 Clone the repository: git clone https://github.com/Bevence/Movie-DVD-E-commerce.git
-Navigate to the project directory: cd Movie-DVD-E-commerce
-Install dependencies: yarn install
-Setup env file 
-    - Rename example.env to .env 
-    - Insert the value as defined in .env
-Setup config file 
-    - Rename the config/example.local.json to config/local.json 
-    - Insert the value as defined
-Run the project: yarn start
 
-To run admin 
-    - First register the user with role ADMIN from postman 
-    - Use the credentials of admin to login in admin panel
+Navigate to the project directory: cd Movie-DVD-E-commerce
+
+Install dependencies: yarn install
+
+Setup env file <br />
+    - Rename example.env to .env <br />
+    - Insert the value as defined in .env<br />
+Setup config file <br />
+    - Rename the config/example.local.json to config/local.json <br />
+    - Insert the value as defined<br />
+Run the project: yarn start<br />
+
+To run admin <br />
+    - First register the user with role ADMIN from postman <br />
+    - Use the credentials of admin to login in admin panel<br />
