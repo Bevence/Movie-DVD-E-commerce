@@ -42,6 +42,7 @@ class OrderController {
     try {
       const { id: userId } = req.currentUser;
       const cart = req.session.cart || [];
+      cart.push(req.body);
       const orderList = [];
 
       cart.forEach((item) => {
@@ -158,7 +159,7 @@ class OrderController {
       });
 
       if (order && order.userId === userId && order.status === "SHIPPED") {
-        const result = await prismaClient.order.update({
+        const result = await prismaClient.orderItem.update({
           where: {
             id,
           },
@@ -176,6 +177,43 @@ class OrderController {
           status: false,
           data: null,
           message: "Order not found or has not been shipped",
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  updateOrderStatusByAdmin = async (req, res, next) => {
+    try {
+      const { role } = req.currentUser;
+      const { id } = req.params;
+      const { status } = req.body;
+      const order = await prismaClient.orderItem.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (order && role === "ADMIN" && order.status !== "COLLECTED") {
+        const result = await prismaClient.orderItem.update({
+          where: {
+            id,
+          },
+          data: {
+            status,
+          },
+        });
+        res.json({
+          status: true,
+          data: result,
+          message: "Collect order success",
+        });
+      } else {
+        res.json({
+          status: false,
+          data: null,
+          message: "Invalid request",
         });
       }
     } catch (err) {

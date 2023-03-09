@@ -20,6 +20,7 @@ Install dependencies: yarn install
 Setup env file <br />
     - Rename example.env to .env <br />
     - Insert the value as defined in .env<br />
+    
 Setup config file <br />
     - Rename the config/example.local.json to config/local.json <br />
     - Insert the value as defined<br />

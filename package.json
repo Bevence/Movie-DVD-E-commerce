@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon server.js",
+    "test": "cross-env NODE_ENV=development jest --runInBand ./tests",
+    "test:watch": "cross-env NODE_ENV=development jest --runInBand --watch ./tests"
   },
   "dependencies": {
     "@adminjs/express": "^5.1.0",
@@ -14,6 +16,7 @@
     "body-parser": "^1.20.2",
     "config": "^3.3.9",
     "cookie-parser": "~1.4.4",
+    "cross-env": "^7.0.3",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-formidable": "^1.2.0",
@@ -23,5 +26,12 @@
     "morgan": "~1.9.1",
     "prisma": "^4.11.0",
     "tslib": "^2.5.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^29.5.0",
+    "superagent": "^8.0.9",
+    "supertest": "^6.3.3"
   }
 }

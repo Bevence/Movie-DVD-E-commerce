@@ -38,7 +38,6 @@ class TitleAkasController {
         };
       }
 
-      console.log("filter :>> ", filter);
       const titleAkas = await prismaClient.titleAkas.findMany({
         where: filter,
         include: {
