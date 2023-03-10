@@ -68,6 +68,55 @@ const admin = new AdminJS({
     },
     {
       resource: { model: dmmf.modelMap.OrderItem, client: prismaClient },
+      options: {
+        actions: {
+          processed: {
+            actionType: ["record"],
+            label: "Publish",
+            icon: "fas fa-eye",
+            isVisible: true,
+            handler: async (req, res, data) => {
+              const { record } = data;
+
+              await record.update({
+                status: "PROCESSED",
+              });
+              return {
+                record: data.record.toJSON(data.currentAdmin),
+                redirectUrl: data.h.resourceActionUrl({
+                  resourceId: data.resource.id(),
+                  actionName: "list",
+                }),
+                notice: {
+                  message: "Successfully update given order to processed",
+                  type: "success",
+                },
+              };
+            },
+          },
+          shipped: {
+            actionType: ["record"],
+            label: "Publish",
+            icon: "fas fa-eye",
+            isVisible: true,
+            handler: async (req, res, data) => {
+              const { record } = data;
+
+              await record.update({
+                status: "SHIPPED",
+              });
+              return {
+                record: data.record.toJSON(data.currentAdmin),
+                redirectUrl: "/admin/resources/OrderItem",
+                notice: {
+                  message: "Successfully update given order to shipped",
+                  type: "success",
+                },
+              };
+            },
+          },
+        },
+      },
     },
   ],
   branding: {
